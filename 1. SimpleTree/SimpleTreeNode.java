@@ -52,7 +52,7 @@ class SimpleTree<T>
         return CreateAllNodes(Root, AllNodes);
     }
 
-    public List<SimpleTreeNode<T>> CreateAllNodes (SimpleTreeNode<T> Root, List<SimpleTreeNode<T>> AllNodes) {
+    private List<SimpleTreeNode<T>> CreateAllNodes (SimpleTreeNode<T> Root, List<SimpleTreeNode<T>> AllNodes) {
         AllNodes.add(Root);
 
         if (Root.Children == null) return AllNodes;
@@ -75,7 +75,7 @@ class SimpleTree<T>
         return FindCorrectNodes(Root, IsFindNodes, val);
     }
 
-    public List<SimpleTreeNode<T>> FindCorrectNodes (SimpleTreeNode<T> Root, List<SimpleTreeNode<T>> IsFindNodes, T val) {
+    private List<SimpleTreeNode<T>> FindCorrectNodes (SimpleTreeNode<T> Root, List<SimpleTreeNode<T>> IsFindNodes, T val) {
         if (Root.Children == null) return IsFindNodes;
 
         for (SimpleTreeNode<T> Child : Root.Children) {
@@ -115,7 +115,7 @@ class SimpleTree<T>
         return CalculateLeafCount(Root, Leafs);
     }
 
-    public int CalculateLeafCount (SimpleTreeNode<T> Root, List<SimpleTreeNode<T>> Leafs) {
+    private int CalculateLeafCount (SimpleTreeNode<T> Root, List<SimpleTreeNode<T>> Leafs) {
 
         for (SimpleTreeNode<T> Child : Root.Children) {
             if (Child.Children == null || Child.Children.isEmpty()) {
