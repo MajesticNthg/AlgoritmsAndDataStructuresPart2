@@ -116,6 +116,7 @@ class SimpleTree<T>
     }
 
     private int CalculateLeafCount (SimpleTreeNode<T> Root, List<SimpleTreeNode<T>> Leafs) {
+        if (Root.Children == null) return Leafs.size();
 
         for (SimpleTreeNode<T> Child : Root.Children) {
             if (Child.Children == null || Child.Children.isEmpty()) {
