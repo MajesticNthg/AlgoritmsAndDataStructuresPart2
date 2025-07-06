@@ -29,6 +29,10 @@ class SimpleTree<T>
             return;
         }
 
+        if (ParentNode.Children == null) {
+            ParentNode.Children = new ArrayList<>();
+        }
+
         ParentNode.Children.add(NewChild);
         NewChild.Parent = ParentNode;
     }
