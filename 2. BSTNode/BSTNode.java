@@ -128,8 +128,8 @@ class BST<T> {
         if (deleteLeafs(SearchKey.Node)) return true;
         if (deleteRootWithoutChild(SearchKey.Node)) return true;
         if (deleteRootWithOneChild(SearchKey.Node)) return true;
-        if (deleteRootWithTwoChild(SearchKey.Node)) return true;
-        return deleteInsideTree(SearchKey.Node);
+        if (deleteWithTwoChild(SearchKey.Node)) return true;
+        return deleteInsideTreeWithOneChild(SearchKey.Node);
     }
 
     private boolean deleteRootWithoutChild (BSTNode<T> node) {
@@ -159,35 +159,26 @@ class BST<T> {
         return true;
     }
 
-    private boolean deleteRootWithTwoChild (BSTNode<T> node) {
-        if (node != Root) return false;
-        BSTNode<T> nodeChild = FinMinMax(node.RightChild, false);
+    private boolean deleteWithTwoChild (BSTNode<T> node) {
+        if (node.RightChild != null && node.LeftChild != null) {
+            BSTNode<T> nodeChild = FinMinMax(node.RightChild, false);
 
-        node.NodeKey = nodeChild.NodeKey;
-        node.NodeValue = nodeChild.NodeValue;
+            node.NodeKey = nodeChild.NodeKey;
+            node.NodeValue = nodeChild.NodeValue;
 
-        if (nodeChild.Parent.LeftChild == nodeChild) {
-            nodeChild.Parent.LeftChild = nodeChild.RightChild;
-        } else {
-            nodeChild.Parent.RightChild = nodeChild.RightChild;
+            if (nodeChild.Parent.LeftChild == nodeChild) {
+                nodeChild.Parent.LeftChild = nodeChild.RightChild;
+            } else {
+                nodeChild.Parent.RightChild = nodeChild.RightChild;
+            }
+
+            if (nodeChild.RightChild != null) {
+                nodeChild.RightChild.Parent = nodeChild.Parent;
+            }
+            return true;
         }
 
-        if (nodeChild.RightChild != null) {
-            nodeChild.RightChild.Parent = nodeChild.Parent;
-        }
-
-        if (node == Root) {
-            nodeChild.Parent = null;
-        } else {
-            nodeChild.Parent = node.Parent;
-        }
-
-        return true;
-    }
-
-    private boolean deleteInsideTree (BSTNode<T> node) {
-        if (deleteInsideTreeWithOneChild(node)) return true;
-        return deleteRootWithTwoChild(node);
+        return false;
     }
 
     private boolean deleteInsideTreeWithOneChild (BSTNode<T> node) {
