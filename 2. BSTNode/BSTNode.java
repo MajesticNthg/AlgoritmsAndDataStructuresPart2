@@ -1,3 +1,6 @@
+import java.io.*;
+import java.util.*;
+
 class BSTNode<T> {
     public int NodeKey;
     public T NodeValue;
@@ -91,7 +94,7 @@ class BST<T> {
         return true;
     }
 
-    public BSTNode<T> FindMinMax (BSTNode<T> FromNode, boolean FindMax) {
+    public BSTNode<T> FinMinMax (BSTNode<T> FromNode, boolean FindMax) {
         if (FindMax) {
             return SearchFindMax(FromNode);
         }
@@ -158,7 +161,7 @@ class BST<T> {
 
     private boolean deleteRootWithTwoChild (BSTNode<T> node) {
         if (node != Root) return false;
-        BSTNode<T> nodeChild = FindMinMax(node.RightChild, false);
+        BSTNode<T> nodeChild = FinMinMax(node.RightChild, false);
 
         node.NodeKey = nodeChild.NodeKey;
         node.NodeValue = nodeChild.NodeValue;
