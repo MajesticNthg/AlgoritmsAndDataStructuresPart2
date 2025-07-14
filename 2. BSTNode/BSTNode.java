@@ -43,11 +43,11 @@ class BST<T> {
 
     private BSTFind<T> SearchNodeByKey (BSTNode<T> ThisNode, BSTFind<T> targetNode, int key) {
         if (ThisNode.NodeKey > key && ThisNode.LeftChild != null) {
-            SearchNodeByKey(ThisNode.LeftChild, targetNode, key);
+            return SearchNodeByKey(ThisNode.LeftChild, targetNode, key);
         }
 
-        if (ThisNode.NodeKey <= key && ThisNode.RightChild != null) {
-            SearchNodeByKey(ThisNode.RightChild, targetNode, key);
+        if (ThisNode.NodeKey < key && ThisNode.RightChild != null) {
+            return SearchNodeByKey(ThisNode.RightChild, targetNode, key);
         }
 
         targetNode.Node = ThisNode;
@@ -80,10 +80,12 @@ class BST<T> {
             return false;
         }
 
-        SearchKey.Node.RightChild = targetNode;
-
+        BSTNode<T> Parent = SearchKey.Node;
+        BSTNode<T> newNode = new BSTNode<>(key, val, Parent);
         if (SearchKey.ToLeft) {
-            SearchKey.Node.LeftChild = targetNode;
+            SearchKey.Node.LeftChild = newNode;
+        } else {
+            SearchKey.Node.RightChild = newNode;
         }
 
         return true;
@@ -99,7 +101,7 @@ class BST<T> {
 
     private BSTNode<T> SearchFindMax (BSTNode<T> node) {
         if (node.RightChild != null) {
-            SearchFindMax(node.RightChild);
+            return SearchFindMax(node.RightChild);
         }
 
         return node;
@@ -107,7 +109,7 @@ class BST<T> {
 
     private BSTNode<T> SearchFindMin (BSTNode<T> node) {
         if (node.LeftChild != null) {
-            SearchFindMin(node.LeftChild);
+            return SearchFindMin(node.LeftChild);
         }
 
         return node;
@@ -120,20 +122,104 @@ class BST<T> {
             return false;
         }
 
-        if (SearchKey.Node == this.Root) {
+        if (deleteLeafs(SearchKey.Node)) return true;
+        if (deleteRootWithoutChild(SearchKey.Node)) return true;
+        if (deleteRootWithOneChild(SearchKey.Node)) return true;
+        if (deleteRootWithTwoChild(SearchKey.Node)) return true;
+        return deleteInsideTree(SearchKey.Node);
+    }
+
+    private boolean deleteRootWithoutChild (BSTNode<T> node) {
+        if (node == Root && node.RightChild == null && node.LeftChild == null) {
             this.Root = null;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean deleteRootWithOneChild (BSTNode<T> node) {
+        if (node != Root) return false;
+        BSTNode<T> nodeChild;
+
+        if (Root.LeftChild != null && Root.RightChild != null) {
+            return false;
         }
 
-        if (SearchKey.Node.LeftChild == null && SearchKey.Node.RightChild == null) {
-            return deleteLeafs(SearchKey.Node);
+        if (node.LeftChild != null) {
+            nodeChild = node.LeftChild;
+        } else {
+            nodeChild = node.RightChild;
+        }
+        Root = nodeChild;
+        nodeChild.Parent = null;
+
+        return true;
+    }
+
+    private boolean deleteRootWithTwoChild (BSTNode<T> node) {
+        if (node != Root) return false;
+        BSTNode<T> nodeChild = FindMinMax(node.RightChild, false);
+
+        node.NodeKey = nodeChild.NodeKey;
+        node.NodeValue = nodeChild.NodeValue;
+
+        if (nodeChild.Parent.LeftChild == nodeChild) {
+            nodeChild.Parent.LeftChild = nodeChild.RightChild;
+        } else {
+            nodeChild.Parent.RightChild = nodeChild.RightChild;
         }
 
-        boolean ParentLeftChild = SearchKey.Node.Parent.LeftChild == SearchKey.Node;
+        if (nodeChild.RightChild != null) {
+            nodeChild.RightChild.Parent = nodeChild.Parent;
+        }
 
-        return DeleteNodeByKeyAll(SearchKey.Node.Parent, SearchKey.Node.RightChild, ParentLeftChild);
+        if (node == Root) {
+            nodeChild.Parent = null;
+        } else {
+            nodeChild.Parent = node.Parent;
+        }
+
+        return true;
+    }
+
+    private boolean deleteInsideTree (BSTNode<T> node) {
+        if (deleteInsideTreeWithOneChild(node)) return true;
+        return deleteRootWithTwoChild(node);
+    }
+
+    private boolean deleteInsideTreeWithOneChild (BSTNode<T> node) {
+        boolean twoChild = node.LeftChild != null && node.RightChild != null;
+        boolean isLeaf = node.LeftChild == null && node.RightChild == null;
+
+        if (twoChild || node.Parent == null || isLeaf) {
+            return false;
+        }
+
+        BSTNode<T> nodeChild;
+        if (node.RightChild == null) {
+            nodeChild = node.LeftChild;
+        } else {
+            nodeChild = node.RightChild;
+        }
+
+        if (node.Parent.LeftChild == node) {
+            node.Parent.LeftChild = nodeChild;
+        } else {
+            node.Parent.RightChild = nodeChild;
+        }
+
+        nodeChild.Parent = node.Parent;
+
+        return true;
     }
 
     private boolean deleteLeafs (BSTNode<T> node) {
+        if (node == Root) return false;
+
+        if (node.LeftChild != null || node.RightChild != null) {
+            return false;
+        }
+
         if (node.Parent.LeftChild == node) {
             node.Parent.LeftChild = null;
         } else {
@@ -142,21 +228,6 @@ class BST<T> {
 
         node.Parent = null;
         return true;
-    }
-
-    private boolean DeleteNodeByKeyAll (BSTNode<T> parent, BSTNode<T> node, boolean ParentLeftChild) {
-        if (node.LeftChild != null) {
-            DeleteNodeByKeyAll(parent, node.LeftChild, ParentLeftChild);
-        }
-
-        node.Parent = parent;
-
-        if (node.RightChild == null && ParentLeftChild) {
-            parent.LeftChild = node;
-            return true;
-        }
-
-        return false;
     }
 
     public int Count() {
@@ -168,6 +239,6 @@ class BST<T> {
             return 0;
         }
 
-        return calculateCount(node.LeftChild) + calculateCount(node.RightChild);
+        return 1 + calculateCount(node.LeftChild) + calculateCount(node.RightChild);
     }
 }
