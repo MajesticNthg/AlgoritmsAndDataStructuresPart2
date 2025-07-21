@@ -252,7 +252,7 @@ class BST<T> {
 
     }
 
-    private ArrayList<BSTNode> addNodeWideAllNodes (ArrayList<BSTNode> WideAllNodes, BSTNode<T> thisNode) {
+    private ArrayList<BSTNode> addNodeWideAllNodes (ArrayList<BSTNode> WideAllNodes, BSTNode thisNode) {
         if (thisNode == null) {
             return WideAllNodes;
         }
@@ -281,7 +281,7 @@ class BST<T> {
         return addSubtree(DeepAllNodes, this.Root, Order);
     }
 
-    private ArrayList<BSTNode> addSubtree (ArrayList<BSTNode> DeepAllNodes, BSTNode<T> thisNode, int Order) {
+    private ArrayList<BSTNode> addSubtree (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode, int Order) {
         if (Order == 0) {
             return addSubtreeInOrder(DeepAllNodes, thisNode);
         }
@@ -293,7 +293,7 @@ class BST<T> {
         return addSubtreePreOrder(DeepAllNodes, thisNode);
     }
 
-    private ArrayList<BSTNode> addSubtreeInOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode<T> thisNode) {
+    private ArrayList<BSTNode> addSubtreeInOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode) {
         if (thisNode == null) {
             return DeepAllNodes;
         }
@@ -305,7 +305,7 @@ class BST<T> {
         return DeepAllNodes;
     }
 
-    private ArrayList<BSTNode> addSubtreePostOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode<T> thisNode) {
+    private ArrayList<BSTNode> addSubtreePostOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode) {
         if (thisNode == null) {
             return DeepAllNodes;
         }
@@ -317,7 +317,7 @@ class BST<T> {
         return DeepAllNodes;
     }
 
-    private ArrayList<BSTNode> addSubtreePreOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode<T> thisNode) {
+    private ArrayList<BSTNode> addSubtreePreOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode) {
         if (thisNode == null) {
             return DeepAllNodes;
         }
