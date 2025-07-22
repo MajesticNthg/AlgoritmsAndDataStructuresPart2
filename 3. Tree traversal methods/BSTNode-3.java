@@ -202,6 +202,41 @@ class BSTTest {
 
     }
 
+        @Test
+    void addNodeInWideAllNodesForSecondTree () {
+        myTree.AddKeyValue(1, "orange");
+        myTree.AddKeyValue(0, "juice");
+        myTree.AddKeyValue(8, "pear");
+        myTree.AddKeyValue(7, "banana");
+        myTree.AddKeyValue(9, "strawberry");
+        myTree.AddKeyValue(6, "blackberry");
+        myTree.AddKeyValue(5, "raspberry");
+
+        ArrayList<BSTNode> test = myTree.WideAllNodes();
+        assertEquals(test.size(), 8);
+        assertEquals(test.getLast().NodeKey, 5);
+        assertEquals(test.get(6).NodeKey, 6);
+        assertEquals(test.get(5).NodeKey, 9);
+
+    }
+
+    @Test
+    void addNodeInWideAllNodesForThirdTree () {
+        myTree.AddKeyValue(5, "orange");
+        myTree.AddKeyValue(7, "juice");
+        myTree.AddKeyValue(2, "pear");
+        myTree.AddKeyValue(0, "strawberry");
+        myTree.AddKeyValue(1, "blackberry");
+        myTree.AddKeyValue(3, "raspberry");
+        myTree.AddKeyValue(15, "cherry");
+
+        ArrayList<BSTNode> test = myTree.WideAllNodes();
+        assertEquals(test.getLast().NodeKey, 15);
+        assertEquals(test.get(5).NodeKey, 7);
+        assertEquals(test.get(4).NodeKey, 3);
+        assertEquals(test.get(3).NodeKey, 1);
+    }
+
     @Test
     void DeepAllNodesTestPreOrder() {
         myTree.AddKeyValue(1, "orange");
