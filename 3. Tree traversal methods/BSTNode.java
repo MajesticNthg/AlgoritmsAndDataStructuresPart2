@@ -236,39 +236,36 @@ class BST<T> {
         return 1 + calculateCount(node.LeftChild) + calculateCount(node.RightChild);
     }
 
-    public ArrayList<BSTNode> WideAllNodes() {
+        public ArrayList<BSTNode> WideAllNodes() {
         ArrayList<BSTNode> WideAllNodes = new ArrayList<>();
+
         if (this.Root == null) {
             return WideAllNodes;
         }
-
-        WideAllNodes.add(this.Root);
 
         if (this.Root.RightChild == null && this.Root.LeftChild == null) {
             return WideAllNodes;
         }
 
-        return addNodeWideAllNodes(WideAllNodes, this.Root);
+        Queue<BSTNode> queueForNode = new LinkedList<>();
+        queueForNode.add(this.Root);
 
-    }
+        while (queueForNode.size() != 0) {
+            BSTNode node = queueForNode.poll();
 
-    private ArrayList<BSTNode> addNodeWideAllNodes (ArrayList<BSTNode> WideAllNodes, BSTNode thisNode) {
-        if (thisNode == null) {
-            return WideAllNodes;
+            WideAllNodes.add(node);
+
+            if (node.LeftChild != null) {
+                queueForNode.add(node.LeftChild);
+            }
+
+            if (node.RightChild != null) {
+                queueForNode.add(node.RightChild);
+            }
         }
-
-        if (thisNode.LeftChild != null) {
-            WideAllNodes.add(thisNode.LeftChild);
-        }
-
-        if (thisNode.RightChild != null) {
-            WideAllNodes.add(thisNode.RightChild);
-        }
-
-        addNodeWideAllNodes(WideAllNodes, thisNode.LeftChild);
-        addNodeWideAllNodes(WideAllNodes, thisNode.RightChild);
 
         return WideAllNodes;
+
     }
 
     public ArrayList<BSTNode> DeepAllNodes(int Order) {
