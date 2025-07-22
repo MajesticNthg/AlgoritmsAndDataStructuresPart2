@@ -279,14 +279,15 @@ class BST<T> {
     }
 
     private ArrayList<BSTNode> addSubtree (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode, int Order) {
-        Queue <BSTNode> leafs = new LinkedList<>();
+        Deque <BSTNode> leafs = new LinkedList<>();
 
         if (Order == 0) {
             return addSubtreeInOrder(DeepAllNodes, thisNode);
         }
 
         if (Order == 1) {
-            return addSubtreePostOrder(DeepAllNodes, thisNode, leafs);
+            addSubtreePostOrder(DeepAllNodes, thisNode, leafs);
+            return createPostOrderList(DeepAllNodes, leafs);
         }
 
         return addSubtreePreOrder(DeepAllNodes, thisNode);
@@ -304,7 +305,7 @@ class BST<T> {
         return DeepAllNodes;
     }
 
-    private ArrayList<BSTNode> addSubtreePostOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode, Queue <BSTNode> leafs) {
+    private ArrayList<BSTNode> addSubtreePostOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode, Deque <BSTNode> leafs) {
         if (thisNode == null) {
             return DeepAllNodes;
         }
@@ -319,11 +320,11 @@ class BST<T> {
             DeepAllNodes.add(thisNode);
         }
 
-        return createPostOrderList(DeepAllNodes, leafs);
+        return DeepAllNodes;
     }
-    private ArrayList<BSTNode> createPostOrderList (ArrayList<BSTNode> DeepAllNodes, Queue <BSTNode> leafs) {
+    private ArrayList<BSTNode> createPostOrderList (ArrayList<BSTNode> DeepAllNodes, Deque <BSTNode> leafs) {
         while (!leafs.isEmpty()) {
-            DeepAllNodes.addFirst(leafs.poll());
+            DeepAllNodes.addFirst(leafs.removeLast());
         }
 
         return DeepAllNodes;
