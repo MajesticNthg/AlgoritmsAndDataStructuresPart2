@@ -279,12 +279,14 @@ class BST<T> {
     }
 
     private ArrayList<BSTNode> addSubtree (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode, int Order) {
+        Queue <BSTNode> leafs = new LinkedList<>();
+
         if (Order == 0) {
             return addSubtreeInOrder(DeepAllNodes, thisNode);
         }
 
         if (Order == 1) {
-            return addSubtreePostOrder(DeepAllNodes, thisNode);
+            return addSubtreePostOrder(DeepAllNodes, thisNode, leafs);
         }
 
         return addSubtreePreOrder(DeepAllNodes, thisNode);
@@ -302,14 +304,27 @@ class BST<T> {
         return DeepAllNodes;
     }
 
-    private ArrayList<BSTNode> addSubtreePostOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode) {
+    private ArrayList<BSTNode> addSubtreePostOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode, Queue <BSTNode> leafs) {
         if (thisNode == null) {
             return DeepAllNodes;
         }
 
-        addSubtreeInOrder(DeepAllNodes, thisNode.LeftChild);
-        addSubtreeInOrder(DeepAllNodes, thisNode.RightChild);
-        DeepAllNodes.add(thisNode);
+        if (thisNode.LeftChild == null && thisNode.RightChild == null) {
+            leafs.add(thisNode);
+        }
+
+        addSubtreePostOrder(DeepAllNodes, thisNode.LeftChild, leafs);
+        addSubtreePostOrder(DeepAllNodes, thisNode.RightChild, leafs);
+        if (!leafs.contains(thisNode)) {
+            DeepAllNodes.add(thisNode);
+        }
+
+        return createPostOrderList(DeepAllNodes, leafs);
+    }
+    private ArrayList<BSTNode> createPostOrderList (ArrayList<BSTNode> DeepAllNodes, Queue <BSTNode> leafs) {
+        while (!leafs.isEmpty()) {
+            DeepAllNodes.addFirst(leafs.poll());
+        }
 
         return DeepAllNodes;
     }
@@ -320,8 +335,8 @@ class BST<T> {
         }
 
         DeepAllNodes.add(thisNode);
-        addSubtreeInOrder(DeepAllNodes, thisNode.LeftChild);
-        addSubtreeInOrder(DeepAllNodes, thisNode.RightChild);
+        addSubtreePreOrder(DeepAllNodes, thisNode.LeftChild);
+        addSubtreePreOrder(DeepAllNodes, thisNode.RightChild);
 
         return DeepAllNodes;
     }
