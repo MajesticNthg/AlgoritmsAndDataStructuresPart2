@@ -252,6 +252,22 @@ class BSTTest {
     }
 
     @Test
+    void DeepAllNodesTestPostOrder () {
+        myTree.AddKeyValue(1, "orange");
+        myTree.AddKeyValue(0, "juice");
+        myTree.AddKeyValue(10, "pear");
+        myTree.AddKeyValue(20, "banana");
+        myTree.AddKeyValue(33, "strawberry");
+        myTree.AddKeyValue(8, "blackberry");
+
+        ArrayList<BSTNode> test = myTree.DeepAllNodes(1);
+        assertEquals(test.getFirst().NodeValue, myTree.FindNodeByKey(0).Node.NodeValue);
+        assertEquals(test.get(1).NodeValue, myTree.FindNodeByKey(1).Node.NodeValue);
+        assertEquals(test.getLast().NodeValue, this.Root.NodeValue);
+        assertEquals(test.get(5).NodeValue, myTree.FindNodeByKey(10).Node.NodeValue);
+    }
+
+    @Test
     void DeepAllNodesTestInOrder() {
         myTree.AddKeyValue(1, "orange");
         myTree.AddKeyValue(0, "juice");
