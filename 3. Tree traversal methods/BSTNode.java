@@ -279,15 +279,12 @@ class BST<T> {
     }
 
     private ArrayList<BSTNode> addSubtree (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode, int Order) {
-        Deque <BSTNode> leafs = new LinkedList<>();
-
         if (Order == 0) {
             return addSubtreeInOrder(DeepAllNodes, thisNode);
         }
 
         if (Order == 1) {
-            addSubtreePostOrder(DeepAllNodes, thisNode, leafs);
-            return createPostOrderList(DeepAllNodes, leafs);
+            return addSubtreePostOrder(DeepAllNodes, thisNode);
         }
 
         return addSubtreePreOrder(DeepAllNodes, thisNode);
@@ -305,27 +302,14 @@ class BST<T> {
         return DeepAllNodes;
     }
 
-    private ArrayList<BSTNode> addSubtreePostOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode, Deque <BSTNode> leafs) {
+    private ArrayList<BSTNode> addSubtreePostOrder (ArrayList<BSTNode> DeepAllNodes, BSTNode thisNode) {
         if (thisNode == null) {
             return DeepAllNodes;
         }
 
-        if (thisNode.LeftChild == null && thisNode.RightChild == null) {
-            leafs.add(thisNode);
-        }
-
-        addSubtreePostOrder(DeepAllNodes, thisNode.LeftChild, leafs);
-        addSubtreePostOrder(DeepAllNodes, thisNode.RightChild, leafs);
-        if (!leafs.contains(thisNode)) {
-            DeepAllNodes.add(thisNode);
-        }
-
-        return DeepAllNodes;
-    }
-    private ArrayList<BSTNode> createPostOrderList (ArrayList<BSTNode> DeepAllNodes, Deque <BSTNode> leafs) {
-        while (!leafs.isEmpty()) {
-            DeepAllNodes.addFirst(leafs.removeLast());
-        }
+        addSubtreePostOrder(DeepAllNodes, thisNode.LeftChild);
+        addSubtreePostOrder(DeepAllNodes, thisNode.RightChild);
+        DeepAllNodes.add(thisNode);
 
         return DeepAllNodes;
     }
