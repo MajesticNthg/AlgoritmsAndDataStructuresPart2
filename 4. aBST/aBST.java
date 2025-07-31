@@ -12,17 +12,17 @@ class aBST {
     }
 
     private int calculateDepth (int depth) {
-        if (depth == 0) {
+        if (depth < 0) {
             return 0;
         }
 
-        if (depth == 1) {
+        if (depth == 0) {
             return 1;
         }
 
         int result_depth = 1;
 
-        for (int i = 0; i < depth - 2; i++) {
+        for (int i = 0; i < depth; i++) {
             result_depth = result_depth * 2 + 1;
         }
 
@@ -31,7 +31,7 @@ class aBST {
 
     public Integer FindKeyIndex (int key) {
         if (Tree.length == 0) {
-            return null;
+            throw new IllegalStateException("Пустое дерево");
         }
 
         int i = 0;
@@ -54,6 +54,10 @@ class aBST {
     }
 
     public int AddKey (int key) {
+        if (Tree.length == 0) {
+            throw new IllegalStateException("Пустое дерево");
+        }
+
         int i = 0;
         while (i < Tree.length) {
             if (Tree[i] == null) {
