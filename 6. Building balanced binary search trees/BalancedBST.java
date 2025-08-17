@@ -13,6 +13,53 @@ class BSTNode {
         LeftChild = null;
         RightChild = null;
     }
+
+    public boolean IsBalanced(BSTNode root_node) {
+        if (root_node == null) {
+            return true;
+        }
+
+        boolean isBalanced = true;
+        isBalanced = checkBalanced(root_node);
+
+
+        if (!isBalanced) {
+            return false;
+        } else {
+            return IsBalanced(root_node.RightChild) && IsBalanced(root_node.LeftChild);
+        }
+    }
+
+    private boolean checkBalanced (BSTNode node) {
+        int sizeRightTree = 0;
+        int sizeLeftTree = 0;
+
+        if (node.RightChild != null) {
+            sizeRightTree = rightTree(node.RightChild, sizeRightTree);
+        }
+        if (node.LeftChild != null) {
+            sizeLeftTree = leftTree(node.LeftChild, sizeLeftTree);
+        }
+
+        return sizeRightTree - sizeLeftTree <= 1 && sizeLeftTree - sizeRightTree <= 1;
+    }
+    private int rightTree (BSTNode node, int size) {
+        if (node.RightChild != null) {
+            size++;
+        } else {
+            return size;
+        }
+        return rightTree(node.RightChild, size);
+    }
+
+    private int leftTree (BSTNode node, int size) {
+        if (node.LeftChild != null) {
+            size++;
+        } else {
+            return size;
+        }
+        return leftTree(node.LeftChild, size);
+    }
 }
 
 class BalancedBST {
@@ -70,10 +117,10 @@ class BalancedBST {
         int sizeLeftTree = 0;
 
         if (node.RightChild != null) {
-            sizeRightTree = rightTree(node.RightChild, sizeRightTree);
+            sizeRightTree = rightTree(node, sizeRightTree);
         }
         if (node.LeftChild != null) {
-            sizeLeftTree = leftTree(node.LeftChild, sizeLeftTree);
+            sizeLeftTree = leftTree(node, sizeLeftTree);
         }
 
         return sizeRightTree - sizeLeftTree <= 1 && sizeLeftTree - sizeRightTree <= 1;
