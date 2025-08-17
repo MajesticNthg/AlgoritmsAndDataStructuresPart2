@@ -50,44 +50,49 @@ class BalancedBST {
     }
 
     public boolean IsBalanced(BSTNode root_node) {
-        if (root_node.RightChild == null && root_node.LeftChild == null) {
+        if (root_node == null) {
             return true;
         }
 
-        boolean isBalanced = false;
-        if (root_node.LeftChild == null) {
-            isBalanced = checkBalanced(root_node.RightChild, 0);
-        } else if (root_node.RightChild == null) {
-            isBalanced = checkBalanced(root_node.LeftChild, 0);
-        }
+        boolean isBalanced = true;
+        isBalanced = checkBalanced(root_node);
+
 
         if (!isBalanced) {
             return false;
+        } else {
+            return IsBalanced(root_node.RightChild) && IsBalanced(root_node.LeftChild);
         }
-
-        IsBalanced(root_node.LeftChild);
-        IsBalanced(root_node.RightChild);
-
-        return true;
     }
 
-    private boolean checkBalanced (BSTNode node, int depth) {
-        if (node.LeftChild == null && node.RightChild == null) {
-            return true;
-        }
-
-        if (depth > 0) {
-            return false;
-        }
-
-        if (node.LeftChild != null) {
-            checkBalanced(node.LeftChild, 1);
-        }
+    private boolean checkBalanced (BSTNode node) {
+        int sizeRightTree = 0;
+        int sizeLeftTree = 0;
 
         if (node.RightChild != null) {
-            checkBalanced(node.RightChild, 1);
+            sizeRightTree = rightTree(node.RightChild, sizeRightTree);
+        }
+        if (node.LeftChild != null) {
+            sizeLeftTree = leftTree(node.LeftChild, sizeLeftTree);
         }
 
-        return false;
+        return sizeRightTree - sizeLeftTree <= 1 && sizeLeftTree - sizeRightTree <= 1;
+    }
+    private int rightTree (BSTNode node, int size) {
+        if (node.RightChild != null) {
+            size++;
+        } else {
+            return size;
+        }
+        return rightTree(node.RightChild, size);
+    }
+
+    private int leftTree (BSTNode node, int size) {
+        if (node.LeftChild != null) {
+            size++;
+        } else {
+            return size;
+        }
+        return leftTree(node.LeftChild, size);
     }
 }
