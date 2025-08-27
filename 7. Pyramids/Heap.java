@@ -17,40 +17,33 @@ class Heap
     }
 
     private int calculateSizeHeap (int depth) {
-        if (depth <= 0) {
+        if (depth < 0) {
             return 0;
         }
-
-        int result_depth = 0;
-
-        for (int i = 0; i < depth; i++) {
-            result_depth = result_depth * 2 + 1;
-            if (result_depth > depth) {
-                return result_depth;
-            }
-        }
-        return result_depth;
+        return (int) Math.pow(2, depth + 1) - 1;
     }
 
     public int GetMax()
     {
-        if (HeapArray == null) {
-            return -1;
-        }
 
-        if (HeapArray.length == 0 || HeapArray[0] == -1) {
+        if (HeapArray == null || HeapArray.length == 0 || HeapArray[0] == -1) {
             return -1;
         }
 
         int max = HeapArray[0];
 
+        int last_index = -1;
         for (int i = HeapArray.length - 1; i >= 0; i--) {
             if (HeapArray[i] != -1) {
-                HeapArray[0] = HeapArray[i];
-                HeapArray[i] = -1;
-                newRoot(0);
+                last_index = i;
                 break;
             }
+        }
+
+        if (last_index != -1) {
+            HeapArray[0] = HeapArray[last_index];
+            HeapArray[last_index] = -1;
+            newRoot(0);
         }
         return max;
     }
