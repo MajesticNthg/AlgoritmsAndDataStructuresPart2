@@ -21,7 +21,7 @@ class SimpleGraph
         vertex = new Vertex[size];
     }
 
-    public void addVertex (int value)
+    public void AddVertex (int value)
     {
         for (int i = 0; i < max_vertex; i++) {
             if (vertex[i] == null) {
@@ -46,7 +46,8 @@ class SimpleGraph
 
     public boolean IsEdge (int v1, int v2)
     {
-        return false;
+        if (v1 < 0 || v1 >= max_vertex || v2 < 0 || v2 >= max_vertex) return false;
+        return m_adjacency[v1][v2] == 1;
     }
 
     public void AddEdge (int v1, int v2)
