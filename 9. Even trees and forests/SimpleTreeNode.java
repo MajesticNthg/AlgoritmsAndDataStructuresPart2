@@ -133,30 +133,41 @@ class SimpleTree<T>
     }
 
     public ArrayList<T> EvenTrees() {
-        ArrayList<T> listVertex = new ArrayList<>();
-        if (Root == null) {
-            return listVertex;
-        }
-        calculateVertexList(Root, listVertex);
+        ArrayList<T> result = new ArrayList<>();
+        if (Root == null) return result;
 
-        return listVertex;
+        int total = countNodes(Root);
+        if (total % 2 != 0) return result;
+
+        calculateVertexList(Root, result);
+        return result;
+    }
+    private int countNodes(SimpleTreeNode<T> node) {
+        if (node == null) return 0;
+        int size = 1;
+        if (node.Children != null) {
+            for (SimpleTreeNode<T> ch : node.Children) {
+                size += countNodes(ch);
+            }
+        }
+        return size;
     }
 
-    private int calculateVertexList (SimpleTreeNode<T> node, ArrayList<T> listVertex) {
-        int subTreeSize = 1;
+    private int calculateVertexList(SimpleTreeNode<T> node, ArrayList<T> result) {
+        int size = 1;
 
         if (node.Children != null) {
             for (SimpleTreeNode<T> child : node.Children) {
-                int sizeChild = calculateVertexList(child, listVertex);
+                int childSize = calculateVertexList(child, result);
 
-                if (sizeChild % 2 == 0) {
-                    listVertex.add(node.NodeValue);
-                    listVertex.add(child.NodeValue);
+                if (childSize % 2 == 0) {
+                    result.add(node.NodeValue);
+                    result.add(child.NodeValue);
                 } else {
-                    subTreeSize = sizeChild;
+                    size += childSize;
                 }
             }
         }
-        return subTreeSize;
+        return size;
     }
 }
