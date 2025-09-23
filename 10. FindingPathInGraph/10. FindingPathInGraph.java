@@ -92,7 +92,10 @@ class SimpleGraph
         stack.push(VFrom);
         vertex[VFrom].Hit = true;
 
-        while (!stack.isEmpty()) {
+        return result(stack, VTo, path);
+    }
+
+    private ArrayList<Vertex> result (Stack<Integer> stack, int VTo, ArrayList<Vertex> path) {
             int current = stack.peek();
 
             if (current == VTo) {
@@ -107,7 +110,7 @@ class SimpleGraph
                 if (m_adjacency[current][i] == 1 && vertex[i] != null && !vertex[i].Hit) {
                     vertex[i].Hit = true;
                     stack.push(i);
-                    found = false;
+                    found = true;
                     break;
                 }
             }
@@ -115,7 +118,10 @@ class SimpleGraph
             if (!found) {
                 stack.pop();
             }
-        }
+
+            if (!stack.isEmpty()) {
+                return result(stack, VTo, path);
+            }
 
         return path;
     }
