@@ -149,10 +149,10 @@ class SimpleGraph
         vertex[VFrom].Hit = true;
         queue.add(VFrom);
 
-        return result(VTo, queue, parent, path);
+        return resultForBreadthFirstSearch(VTo, queue, parent, path);
     }
 
-    private ArrayList<Vertex> result (int VTo, Queue<Integer> queue, int[] parent,ArrayList<Vertex> path) {
+    private ArrayList<Vertex> resultForBreadthFirstSearch (int VTo, Queue<Integer> queue, int[] parent,ArrayList<Vertex> path) {
         int current;
         if (!queue.isEmpty()) {
             current = queue.poll();
@@ -177,7 +177,7 @@ class SimpleGraph
         }
 
         if (!queue.isEmpty()) {
-            return result(VTo, queue, parent, path);
+            return resultForBreadthFirstSearch(VTo, queue, parent, path);
         }
         return path;
     }
