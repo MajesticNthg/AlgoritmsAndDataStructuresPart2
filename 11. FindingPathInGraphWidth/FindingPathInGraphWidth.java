@@ -149,30 +149,45 @@ class SimpleGraph
         vertex[VFrom].Hit = true;
         queue.add(VFrom);
 
-        while (queue.isEmpty()) {
-            int current = queue.poll();
+        return result(VTo, queue, parent, path);
+    }
 
-            if (current == VTo) {
-                LinkedList<Vertex> revPath = new LinkedList<>();
-                int v = VTo;
-                while (v != -1) {
-                    revPath.addFirst(vertex[v]);
-                    v = parent[v];
-                }
-                path.addAll(revPath);
-                return path;
-            }
+    private ArrayList<Vertex> result (int VTo, Queue<Integer> queue, int[] parent,ArrayList<Vertex> path) {
+        int current;
+        if (!queue.isEmpty()) {
+            current = queue.poll();
+        } else {
+            return path;
+        }
 
-            for (int i = 0; i < max_vertex; i++) {
-                if (m_adjacency[current][i] == 1 && vertex[i] != null && !vertex[i].Hit) {
-                    vertex[i].Hit = true;
-                    parent[i] = current;
-                    queue.add(i);
-                }
+        if (current == VTo) {
+            LinkedList<Vertex> revPath = new LinkedList<>();
+            int v = VTo;
+            createPath(revPath, v, parent);
+            path.addAll(revPath);
+            return path;
+        }
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (m_adjacency[current][i] == 1 && vertex[i] != null && !vertex[i].Hit) {
+                vertex[i].Hit = true;
+                parent[i] = current;
+                queue.add(i);
             }
         }
 
+        if (!queue.isEmpty()) {
+            return result(VTo, queue, parent, path);
+        }
         return path;
     }
 
+    private void createPath (LinkedList<Vertex> revPath, int v, int[] parent) {
+        revPath.addFirst(vertex[v]);
+        v = parent[v];
+
+        if (v != -1) {
+            createPath(revPath, v, parent);
+        }
+    }
 }
