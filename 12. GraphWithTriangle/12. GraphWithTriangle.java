@@ -194,27 +194,28 @@ class SimpleGraph
     public ArrayList<Vertex> WeakVertices() {
         ArrayList<Vertex> weakVertices = new ArrayList<>();
 
-        for (int v = 0; v < max_vertex; v++) {
-            if (vertex[v] == null) continue;
-            boolean inTriangle = false;
-
-            for (int u = 0; u < max_vertex; u++) {
-                if (m_adjacency[v][u] == 1) {
-                    for (int w = u + 1; w < max_vertex; w++) {
-                        if (m_adjacency[v][w] == 1 && m_adjacency[u][w] == 1) {
-                            inTriangle = true;
-                            break;
-                        }
-                    }
-                }
-                if (!inTriangle) break;
-            }
+        for (int i = 0; i < max_vertex; i++) {
+            if (vertex[i] == null) continue;
+            boolean inTriangle = searchNeighbour(i);
 
             if (!inTriangle) {
-                weakVertices.add(vertex[v]);
+                weakVertices.add(vertex[i]);
             }
         }
 
         return weakVertices;
+    }
+
+    public boolean searchNeighbour (int i) {
+        for (int x = 0; x < max_vertex; x++) {
+            if (m_adjacency[i][x] == 1) {
+                for (int y = x + 1; y < max_vertex; y++) {
+                    if (m_adjacency[i][y] == 1 && m_adjacency[x][y] == 1) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
