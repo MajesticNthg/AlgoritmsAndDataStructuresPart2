@@ -145,4 +145,5 @@ public class SimpleTreeTest {
 
         assertTrue(result.isEmpty());
     }
+
 }
